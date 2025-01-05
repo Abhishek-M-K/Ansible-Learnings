@@ -1,16 +1,5 @@
 ---
 - hosts: all
   become: true
-  tasks:
-    - name: Install Apache httod
-      ansible.builtin.apt:
-        name: apache2
-        state: present
-        update_cache: yes
-    - name: Copy index.html file with owner and permissions
-      ansible.builtin.copy:
-        src: index.html
-        dest: /var/www/html
-        owner: root
-        group: root
-        mode: '0644' # 0644 means read and write for root and read for others
+  roles:
+    - httpd
