@@ -21,3 +21,7 @@
 go.work
 
 .DS_Store
+
+*.ini*
+*.pass
+*group_vars*

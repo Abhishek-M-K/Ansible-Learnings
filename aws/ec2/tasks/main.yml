@@ -1,0 +1,19 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for ec2 ❌ Not being used
+- name: start an instance with a public IP address
+  amazon.aws.ec2_instance:
+    name: "{{ item.name }}"
+    key_name: "ansible-kp"
+    instance_type: "{{ type}}"
+    security_group: default
+    region: ap-south-1
+    aws_access_key: "{{aws_access_key}}"  # From vault
+    aws_secret_key: "{{aws_secret_key}}"  # From vault    
+    network:
+      assign_public_ip: true
+    image_id: "{{ item.image }}"
+  loop: 
+    - { image: "ami-01816d07b1128cd2d", name: manage-node-1 } # Amazon Linux 2023 AMI (HVM), SSD Volume Type
+    - { image: "ami-0e2c8caa4b6378d8c", name: manage-node-2 } # Ubuntu Server 24.04 LTS (HVM), SSD Volume Type
+    - { image: "ami-0e2c8caa4b6378d8c", name: manage-node-3 } # Ubuntu Server 24.04 LTS (HVM), SSD Volume Type

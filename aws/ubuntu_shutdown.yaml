@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Shutdown Ubuntu Instances Only
+      ansible.builtin.command:
+        /sbin/shutdown -t now 'Shutting down for maintenance'
+      when: ansible_facts['os_family'] == 'Debian'
