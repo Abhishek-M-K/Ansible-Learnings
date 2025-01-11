@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Make sure security packages openssh & openssl are upto date
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - openssh
+        - openssl
+      ignore_errors: yes # Ignore errors and continue with the next task
+      
+    - name: Verify if Docker is installed
+      ansible.builtin.command: docker --version
+      register: docker_version
+      ignore_errors: yes # Ignore all kinds of errors and continue with the next task
+      # failed_when: docker_version.rc != 0 # With failed_when, we can control the failure condition of the task based on any specific condition
+      
+    - name: Install Docker
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+      when: docker_version.failed == true # Install Docker only if it is not installed
