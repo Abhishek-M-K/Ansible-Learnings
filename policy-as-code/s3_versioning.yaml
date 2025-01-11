@@ -1,0 +1,19 @@
+---
+- name: Enforce S3 bucket versioning on AWS
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: List all buckets from AWS account
+      amazon.aws.s3_bucket_info:
+      register: list
+      
+    - debug: 
+        var: list.buckets
+
+    - name: Enforce S3 bucket versioning
+      amazon.aws.s3_bucket:
+        name: "{{ item.name }}"
+        versioning: yes
+      loop: "{{ list.buckets }}"
+      ignore_errors: yes
+        
